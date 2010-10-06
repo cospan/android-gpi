@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:title="Device View" android:id="@+id/itemDeviceActivity" android:orderInCategory="1"></item>
+<item android:title="Workspace Options" android:titleCondensed="Options" android:id="@+id/itemWorkspaceOptions" android:orderInCategory="2"></item>
+<item android:title="Save" android:id="@+id/itemSave" android:orderInCategory="3"></item>
+<item android:title="Load" android:id="@+id/itemLoad" android:orderInCategory="4"></item>
+<item android:title='"Query"' android:id="@+id/itemMediumQuery"></item>
+<item android:id="@+id/itemDeviceStart" android:title='"Start"'></item>
+<item android:id="@+id/itemDeviceStop" android:title='"Stop"'></item>
+</menu>

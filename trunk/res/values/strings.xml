@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="app_name">UCS</string>
+	<string name="lcm_serial_name">LCM  Serial</string>
+	<string name="lcm_serial_info">Serial implementation of LCM</string>
+	<string name="android_name">"Android"</string>
+	<string name="android_info">"Local Devices"</string>
+	<item format="integer" type="raw" name="lcm_serial_control_port_number">59100</item>
+	<string name="lcm_udp_name">LCM UDP</string>
+	<string name="lcm_udp_info">UDP implementation of LCM</string>
+	<string name="lcm_tcp_name">LCM TCP</string>
+	<string name="lcm_tcp_info">TCP implementation of LCM</string>
+	<string name="ucs_name">UCS</string>
+	<string name="ucs_info">Universal Control System</string>
+	<string name="test_name">Test Medium</string>
+	<string name="test_info">Used to exercise System, and Widgets</string>
+	<string name="test_integer_name">Integers</string>
+	<string name="test_integer_info">Continuously send out integers</string>
+	<string name="test_float_name">Floating Points</string>
+	<string name="test_float_info">Continuously send out floating point numbers</string>
+	<string name="test_char_name">Chars</string>
+	<string name="test_char_info">Continuously send out characters</string>
+	<string name="test_string_name">Strings</string>
+	<string name="test_string_info">Continuously send out strings</string>
+	<string name="test_image_name">Images</string>
+	<string name="test_image_info">Continuously send out images</string>
+	<string name="test_audio_name">Audio</string>
+	<string name="test_audio_info">Continuously send out audio</string>
+	<string name="test_video_name">Video</string>
+	<string name="test_video_info">Continuously stream video</string>
+	<string name="options_name">options</string>
+	<string name="change_canvas">changeCanvas</string>
+	<string name="trash_name">trash</string>
+	<string name="handle_name">handle</string>
+	<string name="widget_handle_name">widget handle</string>
+	<string name="connect_canvas_name">canvas connect</string>
+	<string name="connect_list_name">connect list</string>
+	<string name="tcp_default_port_num">7600</string>
+<string name="widget_textbox_name">Text Box</string>
+<string name="widget_textbox_info">Send and receive strings</string>
+<string name="widget_painter_name">Painter</string>
+<string name="widget_painter_info">Paint pictures, send them to your friends!</string>
+</resources>

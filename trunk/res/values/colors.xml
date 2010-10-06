@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<color name="workspace_background_color">#FFFFFFFF</color>
+<color name="entity_drawer_background_color">#77191919</color>
+<color name="delete_color_filter">#A5FF0000</color>
+<color name="widget_canvas_background">#7777</color>
+</resources>
