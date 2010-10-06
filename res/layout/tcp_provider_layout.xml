@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+  	
+<TableLayout
+	xmlns:android="http://schemas.android.com/apk/res/android" 
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent"
+	android:baselineAligned="false"> 
+
+
+	<TableRow android:paddingBottom="2dip">
+		<TextView 
+			android:layout_height="wrap_content" 
+			android:layout_width="fill_parent" 
+			android:text="TCP Provider" 
+			android:layout_weight="1"
+			>
+		</TextView>
+		<TextView 
+			android:layout_height="wrap_content" 
+			android:layout_width="fill_parent" 
+			android:id="@+id/TcpProviderStatusTextView" 
+			android:layout_weight="1"
+			android:text="Not Started">
+		</TextView>
+	</TableRow>
+	<TableRow android:layout_width="fill_parent" android:baselineAligned="false" android:weightSum="1">
+		<Spinner 
+			android:layout_height="wrap_content" 
+			android:id="@+id/NetworkInterfaceSpinner" 
+			android:layout_width="fill_parent"
+			android:layout_weight="1" 
+			>
+		</Spinner>
+	</TableRow>	
+	<TableRow
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+		<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:layout_weight="1">
+			<EditText
+				
+				android:layout_height="wrap_content" 
+				android:text="127" 
+				android:id="@+id/TCPIP0EditText" 
+				android:layout_width="fill_parent" 
+				android:layout_weight="1"
+				android:gravity="right">
+			</EditText>
+			<EditText
+				
+				android:layout_height="wrap_content" 
+				android:layout_width="fill_parent" 
+				android:id="@+id/TCPIP1EditText" 
+				android:text="0" 
+				android:layout_weight="1"
+				android:gravity="right">
+			</EditText>
+			<EditText
+				
+				android:layout_height="wrap_content" 
+				android:layout_width="fill_parent" 
+				android:layout_weight="1" 
+				android:text="0" 
+				android:id="@+id/TCPIP2EditText"
+				android:gravity="right">
+			</EditText>
+			<EditText 
+				
+				android:layout_height="wrap_content" 
+				android:text="1" 
+				android:layout_width="fill_parent" 
+				android:layout_weight="1" 
+				android:id="@+id/TCPIP3EditText"
+				android:gravity="right">
+			</EditText>
+		</LinearLayout>
+	</TableRow>
+
+
+	<TableRow>
+		<TextView 
+			android:layout_height="wrap_content" 
+			android:layout_width="fill_parent" 
+			android:text="Port Number" 
+			android:layout_weight="1" android:layout_gravity="left|center">
+		</TextView>
+
+		<EditText 
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content" 
+			android:id="@+id/TCPPortNumberEditText" 
+			android:text="7600" 
+			android:layout_weight="1"
+			android:digits="[0-9]" android:gravity="right">
+		</EditText>
+	</TableRow>
+	<TableRow
+		android:weightSum="2">
+		<TextView 
+			android:layout_height="wrap_content" 
+			android:layout_width="fill_parent"
+			android:layout_weight="1" 
+			android:text="Start Server if LO?" 
+			android:layout_gravity="left|center">
+		</TextView>
+
+		<CheckBox 
+			android:layout_width="fill_parent" 
+			android:id="@+id/StartServerCheckBox" 
+			android:layout_weight="1" 
+			android:checked="true" 
+			android:clickable="true" 
+			android:layout_gravity="right|center" 
+			android:layout_height="wrap_content">
+		</CheckBox>
+	</TableRow>
+	<TableRow 
+		android:weightSum="1" 
+		android:layout_gravity="bottom">
+		<Button 
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content" 
+			android:id="@+id/TCPConnectButton" 
+			android:text="Connect" 
+			android:layout_weight="1"
+			
+			>
+		</Button>
+	</TableRow>
+
+
+</TableLayout>
+

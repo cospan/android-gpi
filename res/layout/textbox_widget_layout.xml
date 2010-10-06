@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android" 
+	android:id="@+id/textboxLinearLayout" 
+	android:orientation="vertical" 
+	android:layout_height="fill_parent" 
+	android:layout_width="fill_parent" android:padding="2dip">
+	<LinearLayout 
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content" 
+		android:paddingBottom="2dip">
+		<EditText android:background="#FFFFFFFF" android:layout_height="fill_parent" android:layout_width="fill_parent" android:layout_weight="1" android:id="@+id/textboxEditText"></EditText>
+		
+		
+	
+
+
+
+<ImageButton android:layout_width="wrap_content" android:src="@drawable/textwidget_sendimage" android:layout_height="fill_parent" android:background="#FFFFFFFF" android:id="@+id/textboxSendImageButton" android:adjustViewBounds="true" android:scaleType="fitXY" android:padding="2dip"></ImageButton>
+</LinearLayout>
+	<TextView 
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent" 
+		android:id="@+id/textboxOutputText" 
+		android:padding="2dip" android:background="#FFFFFFFF" android:textColor="#FF000000">
+	</TextView>
+
+</LinearLayout>
+
+
+
+
+
+

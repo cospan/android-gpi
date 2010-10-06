@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:title="Entity Properties" android:id="@+id/itemEntityProperties" android:orderInCategory="2"></item>
+
+<item android:title="Workspace" android:id="@+id/itemWorkspace" android:orderInCategory="3"></item><item android:title="UCS Properties" android:id="@+id/itemUcsProperties" android:orderInCategory="1"></item>
+</menu>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<item format="integer" type="raw" name="ViewCellsX">5</item>
+<item format="integer" type="raw" name="ViewCellsY">6</item>	
+
+<item format="integer" type="raw" name="CanvasXCells">20</item>
+<item format="integer" type="raw" name="CanvasYCells">20</item>
+	
+<item format="integer" type="raw" name="WidgetCanvasSizeX">1000</item>
+<item format="integer" type="raw" name="WidgetCanvasSizeY">1000</item>	
+
+<dimen name="ActionViewWidth">48dip</dimen>
+<dimen name="ActionViewHeight">48dip</dimen>	
+	
+<dimen name="XAxisPadding">10dip</dimen>
+<dimen name="YAxisPadding">10dip</dimen>
+
+<dimen name="CellSizeX">48dip</dimen>
+<dimen name="CellSizeY">48dip</dimen>
+
+<dimen name="DeviceIconSizeX">50dip</dimen>
+<dimen name="DeviceIconSizeY">50dip</dimen>
+
+
+</resources>
