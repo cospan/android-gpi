@@ -32,9 +32,11 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.LevelListDrawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 
+import com.cospandesign.android.gpi.GpiConsole;
 import com.cospandesign.android.gpi.entity.Entity;
 import com.cospandesign.android.gpi.router.MessageEndPoint;
 import com.cospandesign.android.gpi.router.MessageRouter;
@@ -45,7 +47,6 @@ import com.cospandesign.android.gpi.workspace.controlcanvas.ControlCanvas;
 import com.cospandesign.android.gpi.workspace.controlcanvas.ControlCanvas.ConnectLabelLayoutParams;
 import com.cospandesign.android.gpi.workspace.widgetcanvas.WidgetCanvas;
 import com.cospandesign.android.gpi.workspace.widgetcanvas.WidgetView;
-import com.cospandesign.android.gpi.workspace.widgetcanvas.WidgetCanvas.WidgetCanvasViewPort;
 import com.cospandesign.gpi.R;
 
 public class WorkspaceEntity extends View implements DropTarget, MessageEndPoint
@@ -76,6 +77,8 @@ public class WorkspaceEntity extends View implements DropTarget, MessageEndPoint
 	Bitmap mDropBitmap;
 	CustomDrawableView mCustomDrawableLayer;
 	
+	final GpiConsole mGpiConsole = GpiConsole.getinstance();
+	
 	//States
 	public static final int IDLE = 0;
 	public static final int SELECTED = 1;
@@ -93,6 +96,29 @@ public class WorkspaceEntity extends View implements DropTarget, MessageEndPoint
 	
 	Hashtable<String, ConnectionPointView> mInputViews;
 	Hashtable<String, ConnectionPointView> mOutputViews;
+	
+	final Handler uiHandler = new Handler();
+	class DrawableUpdateRunnable implements Runnable {
+		public int status;
+		public int color;
+		public boolean useTimeout;
+		public int timeout;
+		public boolean setLevel;
+		private boolean busy;
+		
+		public boolean isBusy() {
+			return busy;
+		}
+		public void setBusy(boolean busy) {
+			this.busy = busy;
+		}
+		
+		public void run(){
+			updateDrawableInUi(status, setLevel, color, useTimeout, timeout);
+		}
+	}
+	final DrawableUpdateRunnable mDrawableUpdateRunnable = new DrawableUpdateRunnable();
+	
 	
 	LevelListDrawable mStatus;
 	int mState = IDLE;
@@ -118,6 +144,7 @@ public class WorkspaceEntity extends View implements DropTarget, MessageEndPoint
 		guiInitialization(viewPort, workspace);
 		
 	}
+
 	public WorkspaceEntity(Context context, Entity e){
 		super (context);
 		mContext = context;
@@ -270,6 +297,7 @@ public class WorkspaceEntity extends View implements DropTarget, MessageEndPoint
 		}
 		return cpv;
 	}
+	@SuppressWarnings("unchecked")
 	public Class getClassFromConnection(ConnectionPointView cpv){
 		
 		if (cpv.isInput()){
@@ -299,7 +327,18 @@ public class WorkspaceEntity extends View implements DropTarget, MessageEndPoint
 		return false;
 	}
 	public void setStatus (int state){
+		//Integer iStatus = new Integer(state);
+		boolean updateDrawable = !mDrawableUpdateRunnable.isBusy();
+		//mGpiConsole.info("setting status " + iStatus.toString());
+		//DrawableUpdateRunnable dur = new DrawableUpdateRunnable();
 		
+//TODO: if I have a busy signal, and a new state comes is there a chance that I could miss a vital state transition?		
+		if (updateDrawable){
+			mDrawableUpdateRunnable.setLevel = false;
+			mDrawableUpdateRunnable.useTimeout = false;
+			mDrawableUpdateRunnable.status = state;
+		}
+
 		
 		switch (state){
 		case IDLE:
@@ -321,30 +360,67 @@ public class WorkspaceEntity extends View implements DropTarget, MessageEndPoint
 			//toOutputState(mState, state);
 			break;
 		case STATUS_OK:
-			mStatus.setLevel(DATA_STATUS_LAYER);
-			mCustomDrawableLayer.setColor(Color.GREEN);
-			((TransitionDrawable)mStatus.getCurrent()).startTransition(mTimeOut);
+			if (updateDrawable){
+				mDrawableUpdateRunnable.status = DATA_STATUS_LAYER;
+				mDrawableUpdateRunnable.setLevel = true;
+				mDrawableUpdateRunnable.color = Color.GREEN;
+				mDrawableUpdateRunnable.useTimeout = true;
+				mDrawableUpdateRunnable.timeout = mTimeOut;
+			}
+
 			break;
 		case WARNING:
-			mStatus.setLevel(DATA_STATUS_LAYER);
-			mCustomDrawableLayer.setColor(Color.YELLOW);
-			((TransitionDrawable)mStatus.getCurrent()).startTransition(mTimeOut);
+			if (updateDrawable){
+				mDrawableUpdateRunnable.status = DATA_STATUS_LAYER;
+				mDrawableUpdateRunnable.setLevel = true;
+				mDrawableUpdateRunnable.color = Color.YELLOW;
+				mDrawableUpdateRunnable.useTimeout = true;
+				mDrawableUpdateRunnable.timeout = mTimeOut;
+			}
+
+
 			break;
 		case ERROR:
-			mStatus.setLevel(DATA_STATUS_LAYER);
-			mCustomDrawableLayer.setColor(Color.RED);
-			((TransitionDrawable)mStatus.getCurrent()).startTransition(mTimeOut);
+			if (updateDrawable){
+				mDrawableUpdateRunnable.status = DATA_STATUS_LAYER;
+				mDrawableUpdateRunnable.setLevel = true;
+				mDrawableUpdateRunnable.color = Color.RED;
+				mDrawableUpdateRunnable.useTimeout = true;
+				mDrawableUpdateRunnable.timeout = mTimeOut;
+			}
+
+
 			break;
 		case NEW_DATA:
-			mStatus.setLevel(DATA_STATUS_LAYER);
-			mCustomDrawableLayer.setColor(Color.WHITE);
-			
-			
+			if (updateDrawable){
+				mDrawableUpdateRunnable.status = DATA_STATUS_LAYER;
+				mDrawableUpdateRunnable.setLevel = true;
+				mDrawableUpdateRunnable.color = Color.WHITE;
+				mDrawableUpdateRunnable.useTimeout = false;
+			}
+
 			break;
 		}
-		mStatus.setLevel(state);
+		//mGpiConsole.info("post");
+		if (updateDrawable){
+			uiHandler.post(mDrawableUpdateRunnable);
+		}
+		//mStatus.setLevel(state);
 		mState = state;
 	}
+	protected void updateDrawableInUi(int status, boolean setLevel, int color, boolean useTimeout, int timeout) {
+		mDrawableUpdateRunnable.setBusy(true);
+		mStatus.setLevel(status);
+		if (setLevel){
+			mCustomDrawableLayer.setColor(color);
+		}
+		if (useTimeout){
+			((TransitionDrawable)mStatus.getCurrent()).startTransition(mTimeOut);	
+		}
+		//mGpiConsole.info("consume");
+		mDrawableUpdateRunnable.setBusy(false);
+		
+	}	
 	public int getState (){
 		return mStatus.getLevel();
 	}
@@ -437,7 +513,7 @@ public class WorkspaceEntity extends View implements DropTarget, MessageEndPoint
 			ConnectionPointView cpv = new ConnectionPointView(this.getContext(), this, channel, ControlCanvas.ConnectLabelLayoutParams.IO.INPUT, mEntity.getInputDataType(channel));
 			//ControlCanvas.ConnectLabelLayoutParams lp = (ControlCanvas.ConnectLabelLayoutParams) new ControlCanvas.ConnectLabelLayoutParams();
 			//cpv.setLayoutParams(lp);
-			ControlCanvas.ConnectLabelLayoutParams lp = (ConnectLabelLayoutParams) cpv.getLayoutParams();
+//			ControlCanvas.ConnectLabelLayoutParams lp = (ConnectLabelLayoutParams) cpv.getLayoutParams();
 			//cpv.measure(this.mControlCanvas.getMeasuredWidth() | MeasureSpec.AT_MOST, this.mControlCanvas.getMeasuredHeight() | MeasureSpec.AT_MOST);
 			//cpv.measure(mViewPort.mSizeX | MeasureSpec.AT_MOST, mViewPort.mSizeY | MeasureSpec.AT_MOST);
 			cpv.measure(this.mControlCanvas.getMeasuredWidth() | MeasureSpec.AT_MOST, this.mControlCanvas.getMeasuredHeight() | MeasureSpec.AT_MOST);
@@ -447,7 +523,7 @@ public class WorkspaceEntity extends View implements DropTarget, MessageEndPoint
 			ConnectionPointView cpv = new ConnectionPointView(this.getContext(), this, channel, ControlCanvas.ConnectLabelLayoutParams.IO.OUTPUT, mEntity.getOutputDataType(channel));
 			//ControlCanvas.ConnectLabelLayoutParams lp = (ControlCanvas.ConnectLabelLayoutParams) new ControlCanvas.ConnectLabelLayoutParams();
 			//cpv.setLayoutParams(lp);
-			ControlCanvas.ConnectLabelLayoutParams lp = (ConnectLabelLayoutParams) cpv.getLayoutParams();
+//			ControlCanvas.ConnectLabelLayoutParams lp = (ConnectLabelLayoutParams) cpv.getLayoutParams();
 			//cpv.measure(mViewPort.mSizeX | MeasureSpec.AT_MOST, mViewPort.mSizeY | MeasureSpec.AT_MOST);
 			cpv.measure(this.mControlCanvas.getMeasuredWidth() | MeasureSpec.AT_MOST, this.mControlCanvas.getMeasuredHeight() | MeasureSpec.AT_MOST);
 			mOutputViews.put(channel, cpv);
@@ -484,7 +560,7 @@ public class WorkspaceEntity extends View implements DropTarget, MessageEndPoint
 	public void setDefaultWidgetViewDimensions(int width, int height){
 		mWidgetView.setDefaultHeight(height);
 		mWidgetView.setDefaultWidth(width);
-		Widget widget = (Widget)mEntity;
+//		Widget widget = (Widget)mEntity;
 	}
 	
 	public void setCellXY (int x, int y){
@@ -742,9 +818,7 @@ public class WorkspaceEntity extends View implements DropTarget, MessageEndPoint
 		public void setColor(int color){
 			mColor = color;
 		}
-		
 
-		
 		@Override
 		public void draw(Canvas canvas)
 		{

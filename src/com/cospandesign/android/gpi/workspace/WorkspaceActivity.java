@@ -105,7 +105,6 @@ public class WorkspaceActivity extends Activity implements DragController.DragLi
 	CanvasScrollView mWidgetCanvasScroller;
 	CanvasScrollView mControlCanvasScroller;
 	WorkspaceLayout mWorkspaceLayout;
-	GpiConsole mConsole = GpiConsole.getinstance();
 	
 	
 	Context mContext;
@@ -417,9 +416,9 @@ public class WorkspaceActivity extends Activity implements DragController.DragLi
 			}
 			
 		}catch (Exception ex){
-			mConsole.error(ex.getMessage());
+			mGpiConsole.error(ex.getMessage());
 			//ex.printStackTrace();
-			Log.e("GPI", ex.getMessage());
+		
 		}
 	}
 	
@@ -631,7 +630,7 @@ public class WorkspaceActivity extends Activity implements DragController.DragLi
 			try {
 				wse.addWidgetCanvasView(wse.getWidgetView(), wse.getLocation()[0], wse.getLocation()[1]);
 			} catch (Exception e) {
-				mConsole.error(e.getMessage());
+				mGpiConsole.error(e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -1212,13 +1211,12 @@ public class WorkspaceActivity extends Activity implements DragController.DragLi
 		if (to == null){
 			
 		}
-		
-		Log.i("ucs", 
-				"Message: " + MessageString + 
-				": " + DirectedString +
-				" to " + ((to==null) ? "NULL" : to.toString()) +
-				" from " + ((from==null) ? "NULL" : from.toString()) +
-				" data: " + ((Data==null) ? "NULL" : Data.toString()));
+		this.mGpiConsole.info(	"Message: " + MessageString + 
+								": " + DirectedString +
+								" to " + ((to==null) ? "NULL" : to.toString()) +
+								" from " + ((from==null) ? "NULL" : from.toString()) +
+								" data: " + ((Data==null) ? "NULL" : Data.toString()));
+
 	}
 	
 	//Message End Point

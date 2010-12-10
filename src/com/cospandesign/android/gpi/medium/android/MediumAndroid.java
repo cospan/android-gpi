@@ -72,68 +72,76 @@ public class MediumAndroid extends Medium implements SensorEventListener{
 		List<Sensor> sList = sensorManager.getSensorList(Sensor.TYPE_ALL);
 		Device device =	null;
 		mDevices.clear();
-		for (Sensor sensor:sList)
-		{
-			
-			switch (sensor.getType())
+		if (!sList.isEmpty()){
+			for (Sensor sensor:sList)
 			{
-			case (Sensor.TYPE_ACCELEROMETER):
-				mConsole.info("Found Accellerometer");
-				device = new AndroidAccellerometer (sensor.getName(), "Accellerometer", R.drawable.accelleration, mContext, true, this, sensor, sensorManager);
-				//device.start();
-				break;
-			case (Sensor.TYPE_LIGHT):
-				mConsole.info("Found Light Sensor");
-				device = new AndroidLight (sensor.getName(), "Light Sensor Sensor", R.drawable.light, mContext, true, this, sensor, sensorManager);
-				//device.start();
-				break;
-			case (Sensor.TYPE_MAGNETIC_FIELD):
-				mConsole.info("Found Magnetic Field Sensor");
-				device = new AndroidMagneticField (sensor.getName(), "Magnetic Field Sensor", R.drawable.magnetic, mContext, true, this, sensor, sensorManager);
-				//device.start();
-				break;
-			case (Sensor.TYPE_ORIENTATION):
-				mConsole.info("Found Orientation Sensor");
-				device = new AndroidOrientation (sensor.getName(), "Orientation Sensor", R.drawable.orientation, mContext, true, this, sensor, sensorManager);
-				//device.start();
-				break;
-			case (Sensor.TYPE_PRESSURE):
-				mConsole.info("Found Preassure Sensor");
-				device = new AndroidPreassure (sensor.getName(), "Pressure Sensor", R.drawable.pressure, mContext, true, this, sensor, sensorManager);
-				//device.start();
-				break;
-			case (Sensor.TYPE_PROXIMITY):
-				mConsole.info("Found Proximity Sensor");
-				device = new AndroidProximity (sensor.getName(), "Proximity Sensor", R.drawable.proximity, mContext, true, this, sensor, sensorManager);
-				//device.start();
-				break;
-			case (Sensor.TYPE_TEMPERATURE):
-				mConsole.info("Found Temperature Sensor");
-				device = new AndroidTemperature (sensor.getName(), "Temperature Sensor", R.drawable.temperature, mContext, true, this, sensor, sensorManager);
-				//device.start();
-				break;
-			default:
-				if (sensor instanceof Sensor){
-					try {
-						mConsole.info("Found Unknown Sensor");
-						device = new AndroidSensor (sensor.getName(), "Unknown Sensor", R.drawable.unknown, mContext, true, this, sensor, sensorManager);
-						mConsole.info("Added " + sensor.getName());
-					}
-					catch (Exception ex){
-						ex.printStackTrace();
-						//device = new AndroidSensor ("Unknown", ("Error In Device Properties"), R.drawable.unknown, context, true, this, sensor, sensorManager);
-						mConsole.error("Error, failed to add unknown sensor");
-					}
-				}
-				else
+				
+				switch (sensor.getType())
 				{
-					device = new AndroidSensor ("Unknown", ("Device Value is NULL"), R.drawable.unknown, mContext, true, this, sensor, sensorManager);
+				case (Sensor.TYPE_ACCELEROMETER):
+					mConsole.info("Found Accellerometer");
+					device = new AndroidAccellerometer (sensor.getName(), "Accellerometer", R.drawable.accelleration, mContext, true, this, sensor, sensorManager);
+					//device.start();
+					break;
+				case (Sensor.TYPE_LIGHT):
+					mConsole.info("Found Light Sensor");
+					device = new AndroidLight (sensor.getName(), "Light Sensor Sensor", R.drawable.light, mContext, true, this, sensor, sensorManager);
+					//device.start();
+					break;
+				case (Sensor.TYPE_MAGNETIC_FIELD):
+					mConsole.info("Found Magnetic Field Sensor");
+					device = new AndroidMagneticField (sensor.getName(), "Magnetic Field Sensor", R.drawable.magnetic, mContext, true, this, sensor, sensorManager);
+					//device.start();
+					break;
+				case (Sensor.TYPE_ORIENTATION):
+					mConsole.info("Found Orientation Sensor");
+					device = new AndroidOrientation (sensor.getName(), "Orientation Sensor", R.drawable.orientation, mContext, true, this, sensor, sensorManager);
+					//device.start();
+					break;
+				case (Sensor.TYPE_PRESSURE):
+					mConsole.info("Found Preassure Sensor");
+					device = new AndroidPreassure (sensor.getName(), "Pressure Sensor", R.drawable.pressure, mContext, true, this, sensor, sensorManager);
+					//device.start();
+					break;
+				case (Sensor.TYPE_PROXIMITY):
+					mConsole.info("Found Proximity Sensor");
+					device = new AndroidProximity (sensor.getName(), "Proximity Sensor", R.drawable.proximity, mContext, true, this, sensor, sensorManager);
+					//device.start();
+					break;
+				case (Sensor.TYPE_TEMPERATURE):
+					mConsole.info("Found Temperature Sensor");
+					device = new AndroidTemperature (sensor.getName(), "Temperature Sensor", R.drawable.temperature, mContext, true, this, sensor, sensorManager);
+					//device.start();
+					break;
+				default:
+					if (sensor instanceof Sensor){
+						try {
+							mConsole.info("Found Unknown Sensor");
+							//device = new AndroidSensor (sensor.getName(), "Unknown Sensor", R.drawable.unknown, mContext, true, this, sensor, sensorManager);
+							//mConsole.info("Added " + sensor.getName());
+						}
+						catch (Exception ex){
+							ex.printStackTrace();
+							//device = new AndroidSensor ("Unknown", ("Error In Device Properties"), R.drawable.unknown, context, true, this, sensor, sensorManager);
+							mConsole.error("Error, failed to add unknown sensor");
+						}
+					}
+					else
+					{
+						device = new AndroidSensor ("Unknown", ("Device Value is NULL"), R.drawable.unknown, mContext, true, this, sensor, sensorManager);
+					}
+					break;
 				}
-				break;
+				try {
+					AndroidDevices.add(device);
+					mDevices.add(device);
+					AndroidSensorTable.put(sensor.getName(), (AndroidSensor)device);
+				}
+				catch (Exception ex){
+					mConsole.error("Error, unable to add sensor");
+				
+				}
 			}
-			AndroidDevices.add(device);
-			mDevices.add(device);
-			AndroidSensorTable.put(sensor.getName(), (AndroidSensor)device);
 		}
 		
 		//check for location listener
@@ -143,9 +151,14 @@ public class MediumAndroid extends Medium implements SensorEventListener{
 		String providerName = locationManager.getBestProvider(((Criteria)new Criteria()), false);
 		if (providerName != null){
 			mConsole.info("Found a Location Manager");
-			device = new AndroidLocationDevice ("Location Manager", "Generic Location Interface", R.drawable.location, mContext, true, this, locationManager);
-			AndroidDevices.add(device);
-			mDevices.add(device);		
+			try {
+				device = new AndroidLocationDevice ("Location Manager", "Generic Location Interface", R.drawable.location, mContext, true, this, locationManager);
+				AndroidDevices.add(device);
+				mDevices.add(device);
+			}
+			catch (Exception ex){
+				mConsole.error("Error, unable to add location manager");
+			}
 		}
 		return true;	
 	}
