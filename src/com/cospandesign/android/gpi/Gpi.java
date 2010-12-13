@@ -33,11 +33,12 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -82,6 +83,8 @@ public class Gpi extends Activity {
 	private static String MENU_LOAD_TITLE = "Load";
 	private static final int MENU_SAVE = 3;
 	private static String MENU_SAVE_TITLE = "Save";
+	private static final int MENU_QUIT = 4;
+	private static String MENU_QUIT_TITLE = "Quit";
 		
 	GpiConsole mConsole = GpiConsole.getinstance();
 	
@@ -176,6 +179,7 @@ public class Gpi extends Activity {
 		menu.add(0, MENU_SAVE, 1, MENU_SAVE_TITLE);
 		menu.add(0, MENU_WORKSPACE, 2, MENU_WORKSPACE_TITLE);
 		menu.add(0, MENU_PROPERTIES, 3, MENU_PROPERTIES_TITLE);
+		menu.add(0, MENU_QUIT, 4, MENU_QUIT_TITLE);
 		return true;
 	}
 	@Override
@@ -196,6 +200,9 @@ public class Gpi extends Activity {
 			intent.putExtra("entity", mCurrentEntity.getName());
 			
 			startActivity(intent);
+			return true;
+		case MENU_QUIT:
+			finish();
 			return true;
 			
 		
@@ -222,8 +229,10 @@ public class Gpi extends Activity {
 		//intent.putExtra("com.cospandesign.ucs.ucsController", ucs);
 		
 //		mControllerGallery.setSelection(position, true);
+		mCurrentEntity = mGpiController;
 		mMediumGallery.setAdapter(new mediumGalleryAdapter(this));
 		mDeviceGallery.setAdapter(new deviceGalleryAdapter(this));
+		updateAdapters();
 		
 	}
 	private void mediumLongClick(AdapterView<?> parent, View v, int position, long id)
@@ -491,6 +500,16 @@ public class Gpi extends Activity {
 		this.mCurrentEntity.buttonClick((Integer)v.getTag());
 		updateNameInfo();
 	}
+	private void checkBoxChecked(View v, boolean isChecked){
+		CheckBox checkBox = (CheckBox) v;
+		String key = (String) checkBox.getTag();
+		EntityProperty entityProperty = (EntityProperty) mCurrentEntity.getProperty(key);
+		if (!entityProperty.isReadOnly()){
+		entityProperty.setData(checkBox.isChecked());
+		entityProperty.updateProperties();
+		}
+		updateNameInfo();
+	}
 	private void startActivity (View v, Class activity){
 		Button b = (Button) v;
 		Intent intent = new Intent (this, activity);
@@ -552,13 +571,24 @@ public class Gpi extends Activity {
 				switch (entityProperty.getType()){
 					case CHECK_BOX :
 						Boolean checked = (Boolean) entityProperty.getData();
-						RadioButton radioButton = new RadioButton(getApplicationContext());
-						radioButton.setChecked(checked);
-						radioButton.setLayoutParams(params);
+						CheckBox checkBox = new CheckBox(getApplicationContext());
 						if (entityProperty.isReadOnly()){
-							radioButton.setEnabled(false);
+							checkBox.setEnabled(false);
 						}
-						mTableRow.addView(radioButton);
+						checkBox.setChecked(checked);
+						checkBox.setLayoutParams(params);
+						checkBox.setTag(key);
+						checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener (){
+
+							public void onCheckedChanged(
+									CompoundButton buttonView, boolean isChecked) {
+								checkBoxChecked(buttonView, isChecked);
+								
+							}
+
+						});
+
+						mTableRow.addView(checkBox);
 						break;
 					case LABEL:
 						String string = (String) entityProperty.getData();
@@ -579,9 +609,9 @@ public class Gpi extends Activity {
 					case NUMBER_SLIDER:
 						break;
 					case NUMBER_BOX:
-						Integer integer = (Integer) entityProperty.getData();
+						Object obj = entityProperty.getData();
 						TextView textIntegerView = new TextView(getApplicationContext());
-						textIntegerView.setText(integer.toString());
+						textIntegerView.setText(obj.toString());
 						textIntegerView.setLayoutParams(params);
 						mTableRow.addView(textIntegerView);
 						break;

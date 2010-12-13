@@ -88,6 +88,13 @@ public class Widget extends Entity
 			mWorkspaceEntity.addWidgetView(view);
 		}
 	}
+	public void RemoveView(View view){
+		if (mWorkspaceEntity != null){
+			if (mWorkspaceEntity.getWidgetView() != null){
+				mWorkspaceEntity.removeWidgetView();
+			}
+		}
+	}
 	public void setWidgetViewSrollEnabled(boolean enabled){
 		if (getWorkspaceEntity() == null){
 			return;

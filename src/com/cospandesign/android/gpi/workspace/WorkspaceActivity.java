@@ -27,12 +27,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -56,7 +56,6 @@ import com.cospandesign.android.gpi.workspace.controlcanvas.ControlCanvas;
 import com.cospandesign.android.gpi.workspace.widgetcanvas.WidgetCanvas;
 import com.cospandesign.android.gpi.workspace.widgetcanvas.WidgetGrid;
 import com.cospandesign.android.gpi.workspace.widgetcanvas.WidgetView;
-import com.cospandesign.android.gpi.workspace.widgetcanvas.WidgetCanvas.LayoutParams;
 import com.cospandesign.gpi.R;
 
 public class WorkspaceActivity extends Activity implements DragController.DragListener, MessageRouter, MessageEndPoint, OnClickListener, OnLongClickListener
@@ -628,6 +627,7 @@ public class WorkspaceActivity extends Activity implements DragController.DragLi
 			//we have a widget for a ManifestEntity to add to the WidgetCanvas
 			
 			try {
+
 				wse.addWidgetCanvasView(wse.getWidgetView(), wse.getLocation()[0], wse.getLocation()[1]);
 			} catch (Exception e) {
 				mGpiConsole.error(e.getMessage());
@@ -904,8 +904,8 @@ public class WorkspaceActivity extends Activity implements DragController.DragLi
 			//onRestart() if this activity is coming back to interact with the user
 			//onDestroy() if this activity is goign away
 		//Compliment == onRestart(), onStart()
-		
 		super.onStop();
+
 	}
 	@Override
 	protected void onDestroy()
@@ -931,6 +931,7 @@ public class WorkspaceActivity extends Activity implements DragController.DragLi
 		}
 		mWidgetCanvas.removeAllViews();
 		mControlCanvas.removeAllViews();
+		
 		super.onDestroy();
 	}
 

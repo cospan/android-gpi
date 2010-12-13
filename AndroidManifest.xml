@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.cospandesign.gpi"
-      android:versionCode="1"
-      android:versionName="1.0">
+      android:versionCode="1" android:versionName=".003">
     <application 
     	android:label="@string/app_name" 
-    	android:theme="@android:style/Theme.Black.NoTitleBar" 
-    	android:icon="@drawable/cducst" 
     	android:debuggable="true" 
     	android:name="com.cospandesign.android.gpi.GpiApp"
-    	>
+    	android:icon="@drawable/cdgpit" android:theme="@android:style/Theme.Black.NoTitleBar">
         
 
 	    <activity 
 	    	android:name="com.cospandesign.android.gpi.Gpi" 
-	    	android:icon="@drawable/cducst">
+	    	android:icon="@drawable/cdgpit" android:launchMode="singleTop">
 	    	<intent-filter>
                 <action 
                 	android:name="android.intent.action.MAIN" 
@@ -42,8 +39,11 @@
 		<activity 
 			android:name="com.cospandesign.android.gpi.medium.lcmtcp.TCPProviderActivity">
 		</activity>
+		<service
+			android:name="com.cospandesign.android.gpi.GpiService">
+		</service>
 	</application>
-    <uses-sdk android:minSdkVersion="3" />
+    <uses-sdk android:minSdkVersion="4"/>
 
 
 <uses-permission android:name="android.permission.INTERNET"></uses-permission>
@@ -51,4 +51,5 @@
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
 <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"></uses-permission>
 <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"></uses-permission>
+
 </manifest> 
