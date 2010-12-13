@@ -84,7 +84,9 @@ public class DoubleViewerWidget extends Widget
 	public void serviceInitialization() {
 		super.serviceInitialization();
 		//Remove ourselves from any listening position
+		
 		mFloatGraphView.stop();
+		this.RemoveView(mFloatGraphView);
 		mFloatGraphView = null;
 	}
 

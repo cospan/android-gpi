@@ -30,6 +30,7 @@ import com.cospandesign.android.gpi.device.Device;
 import com.cospandesign.android.gpi.entity.EntityProperty;
 import com.cospandesign.android.gpi.entity.EntityProperty.ENTITY_PROPERTY_TYPE;
 import com.cospandesign.android.gpi.medium.Medium;
+import com.cospandesign.android.gpi.workspace.WorkspaceEntity;
 
 public class TestIntegerDevice extends Device
 {
@@ -122,20 +123,41 @@ public class TestIntegerDevice extends Device
 	}
 
 	
+/*	
+	@Override
+	public void guiInitialization(WorkspaceEntity workspaceEntity) {
+		super.guiInitialization(workspaceEntity);
+		mTimer = new Timer();
+		mTimerTask = new TimerTask(){
+			public void run(){
+				Tick();
+			}		
+		};			
+		mTimer.scheduleAtFixedRate(mTimerTask, 1000, 100);
+	}
+
+	@Override
+	public void serviceInitialization() {
+		super.serviceInitialization();
+		mTimerTask.cancel();
+		mTimerTask = null;
+	}
+*/
 	public void Tick(){
 
-		switch (FunctionType){
-		case CONSTANT:
-			FunctionConstant();
-			break;
-		case RANDOM:
-			FunctionRandom();
-			break;
-		case EQUATION:
-			FunctionEquation();
-			break;
+		if (!isServiceMode()){
+			switch (FunctionType){
+			case CONSTANT:
+				FunctionConstant();
+				break;
+			case RANDOM:
+				FunctionRandom();
+				break;
+			case EQUATION:
+				FunctionEquation();
+				break;
+			}
 		}
-		
 		//Check setup the timing
 		if (mStopFlag == false){
 			//mTimer.sschedule(mTimerTask, UpdateRate);

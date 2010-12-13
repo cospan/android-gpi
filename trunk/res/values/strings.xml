@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <string name="app_name">UCS</string>
+    <string name="app_name">GPI</string>
 	<string name="lcm_serial_name">LCM  Serial</string>
 	<string name="lcm_serial_info">Serial implementation of LCM</string>
 	<string name="android_name">"Android"</string>
@@ -11,8 +11,8 @@
 	<string name="lcm_udp_info">UDP implementation of LCM</string>
 	<string name="lcm_tcp_name">LCM TCP</string>
 	<string name="lcm_tcp_info">TCP implementation of LCM</string>
-	<string name="ucs_name">UCS</string>
-	<string name="ucs_info">Universal Control System</string>
+	<string name="gpi_name">GPI</string>
+	<string name="gpi_info">Graphical Programming Interface</string>
 	<string name="test_name">Test Medium</string>
 	<string name="test_info">Used to exercise System, and Widgets</string>
 	<string name="test_integer_name">Integers</string>
@@ -41,4 +41,6 @@
 <string name="widget_textbox_info">Send and receive strings</string>
 <string name="widget_painter_name">Painter</string>
 <string name="widget_painter_info">Paint pictures, send them to your friends!</string>
+<string name="start_service">&quot;GPI&quot;</string>
+<string name="stop_service">&quot;Stopping GPI service&quot;</string>
 </resources>

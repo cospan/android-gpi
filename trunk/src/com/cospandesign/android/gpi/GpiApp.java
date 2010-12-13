@@ -23,8 +23,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import android.app.Application;
+import android.content.res.Configuration;
 
-import com.cospandesign.android.gpi.controller.Controller;
+import com.cospandesign.android.gpi.controller.android.GpiController;
 import com.cospandesign.android.gpi.entity.Entity;
 import com.cospandesign.android.gpi.entity.EntityTree;
 import com.cospandesign.android.gpi.entity.EntityProperty.ENTITY_PROPERTY_TYPE;
@@ -49,9 +50,10 @@ public class GpiApp extends Application implements StructureListener{
 	private static Integer mBoardId;
 	final GpiConsole mConsole = GpiConsole.getinstance();
 	private ArrayList<WorkspaceEntity> mActiveWses;
+	//private static GpiService mGpiService;
 
 
-
+	//Lifecycle
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -61,15 +63,27 @@ public class GpiApp extends Application implements StructureListener{
 		mWidgets = new ArrayList<Widget>();
 		SetupWidgets();	
 		mActiveWses = new ArrayList<WorkspaceEntity>();
+		//mConsole.info("Attempting to start service");
+		//this.startService(new Intent(this, GpiService.class));
+		//bindService(new Intent(this, GpiService.class), mConnection, Context.BIND_AUTO_CREATE);
+		
+		
 	}
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		
+		//do something with configuration
+	}
+
 
 	private void SetupControlTree ()
 	{
 		Entity entity;
-		mEntityTree = new EntityTree(new Controller(
-				getString(R.string.ucs_name),
-				getString(R.string.ucs_info),
-				R.drawable.cducst, 
+		mEntityTree = new EntityTree(new GpiController(
+				getString(R.string.gpi_name),
+				getString(R.string.gpi_info),
+				R.drawable.cdgpit, 
 				this, 
 				true));
 		mEntityTree.add(new MediumTest(

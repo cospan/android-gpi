@@ -554,6 +554,11 @@ public class WorkspaceEntity extends View implements DropTarget, MessageEndPoint
 		//TODO add widget view from here, not from the widget
 		mWidgetView.addView(view);
 	}
+	public void removeWidgetView(){
+		if (getWidgetView() != null){
+			mWidgetView.removeAllViews();
+		}
+	}
 	public WidgetView getWidgetView(){
 		return mWidgetView;
 	}
@@ -777,7 +782,9 @@ public class WorkspaceEntity extends View implements DropTarget, MessageEndPoint
 	
 	//Data Connection
 	public void newOutputData(String channel){
+
 		mOutputViews.get(channel).setState(ConnectionPointView.STATE.NEW_DATA);
+
 	}
 	public void newInputData(String channel){
 		mInputViews.get(channel).setState(ConnectionPointView.STATE.NEW_DATA);
