@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  	xmlns:android="http://schemas.android.com/apk/res/android"
+  	android:id="@+id/NumberBoxLinearLayout"
+  	android:layout_width="fill_parent"
+  	android:layout_height="fill_parent">
+	<EditText 
+		android:layout_height="wrap_content" 
+		android:text="50" 
+		android:layout_width="fill_parent" 
+		android:id="@+id/NumberEditText" 
+		android:layout_weight="1" 
+		android:digits='"0123456789"'>
+	</EditText>
+	<Button 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		android:id="@+id/NumberSendButton" 
+		android:text="Send">
+	</Button>
+
+
+</LinearLayout>
