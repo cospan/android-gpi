@@ -25,6 +25,7 @@ import java.util.Set;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 
 import com.cospandesign.android.gpi.GpiConsole;
 import com.cospandesign.android.gpi.entity.EntityProperty.ENTITY_PROPERTY_TYPE;
@@ -40,6 +41,8 @@ public class Entity {
 	protected String mName;
 	protected String mInfo;
 	protected boolean mServiceMode = false;
+
+	protected boolean mUISync = true;
 	
 	//Properties
 	Hashtable<String, EntityProperty> mEntityProperties;
@@ -62,6 +65,7 @@ public class Entity {
 		mImage = image;
 		mContext = context;
 		mEnable = enable;
+
 		
 		mListenerMap = new Hashtable<String, Hashtable<Entity, HashSet<String>>>();
 		
@@ -111,6 +115,13 @@ public class Entity {
 	public void setWorkspaceEntity(WorkspaceEntity mWorkspaceEntity) {
 		this.mWorkspaceEntity = mWorkspaceEntity;
 	}
+	public boolean isUISync() {
+		return mUISync;
+	}
+	public void setUISync(boolean mUISync) {
+		this.mUISync = mUISync;
+	}
+
 	public void resetWorkspaceEntity(){
 		mWorkspaceEntity = null;
 	}
@@ -151,6 +162,13 @@ public class Entity {
 			mEntityProperties.put(name, new EntityProperty(this, data, type, description, readOnly));
 		}
 		propertiesUpdate();
+	}
+	public void setProperty(String name, Object data){
+		EntityProperty entityProperty = null;
+		if (mEntityProperties.keySet().contains(name)){
+			entityProperty = mEntityProperties.get(name);
+			entityProperty.setData(data);
+		}
 	}
 	public EntityProperty getProperty(String name){
 		return mEntityProperties.get(name);
@@ -339,10 +357,20 @@ public class Entity {
 					//TODO send a message that there is nothing to send it to
 				}
 				else {
-					//TODO show data was passed through here
+//This needs to be posted in the UI thread so all reading elements don't have to write custom code to check whether the data is in the UI or main thread.
+//Will this slow things down substantially??					
+//I can give the option of allowing a user to only receive synchronized data
 					//because we waited until here to notify the output that there is new data available, we can set up
 					//animation on the host side tht says data passed out
-					entity.newDataAvailable(inputChannels);
+					
+					if (entity.isUISync()){
+						mUIRunnable.entity = entity;
+						mUIRunnable.inputChannels = inputChannels;
+						mUIHandler.post(mUIRunnable);
+					}
+					else {
+						entity.newDataAvailable(inputChannels);
+					}
 				}
 			}
 		}
@@ -427,6 +455,21 @@ public class Entity {
 		mGpiConsole.error(mName + " " + string);
 	}
 
+	//Synchronized output
+	final Handler mUIHandler = new Handler();
+	class UIRunnable implements Runnable {
+		public Entity entity;
+		public HashSet<String> inputChannels;
+		public void run() {
+			//there is a change that the user could delete the entity before the UI runnable got a chance to run
+			if (entity == null){
+				return;
+			}
+			entity.newDataAvailable(inputChannels);
+		}
+	}
+	final UIRunnable mUIRunnable = new UIRunnable();
+	
 	//Override Me
 	public void setupPropertyFromIntent(String key, Intent returnIntent){
 		

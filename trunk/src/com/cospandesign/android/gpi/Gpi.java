@@ -188,6 +188,8 @@ public class Gpi extends Activity {
 		Intent intent;
 		switch (item.getItemId()){
 		case MENU_SAVE:
+			intent = new Intent(this, GpiSaveExternal.class);
+			startActivity(intent);
 			return true;
 		case MENU_LOAD:
 			return true;
@@ -526,8 +528,8 @@ public class Gpi extends Activity {
 //TODO Put back images in the device property table
 
 		}catch (Exception ex){
-			mConsole.error("UpdateAdapters(): " +ex.getMessage());
-			ex.printStackTrace();
+			mConsole.error("Can't update name info", ex);
+			//ex.printStackTrace();
 		}
 	}
 	public void updateNameInfo () {

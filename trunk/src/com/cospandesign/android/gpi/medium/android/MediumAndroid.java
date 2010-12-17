@@ -121,9 +121,9 @@ public class MediumAndroid extends Medium implements SensorEventListener{
 							//mConsole.info("Added " + sensor.getName());
 						}
 						catch (Exception ex){
-							ex.printStackTrace();
+							//ex.printStackTrace();
 							//device = new AndroidSensor ("Unknown", ("Error In Device Properties"), R.drawable.unknown, context, true, this, sensor, sensorManager);
-							mConsole.error("Error, failed to add unknown sensor");
+							mConsole.error("Error, failed to add unknown sensor", ex);
 						}
 					}
 					else
@@ -138,7 +138,7 @@ public class MediumAndroid extends Medium implements SensorEventListener{
 					AndroidSensorTable.put(sensor.getName(), (AndroidSensor)device);
 				}
 				catch (Exception ex){
-					mConsole.error("Error, unable to add sensor");
+					mConsole.error("Error, unable to add sensor", ex);
 				
 				}
 			}
@@ -157,7 +157,7 @@ public class MediumAndroid extends Medium implements SensorEventListener{
 				mDevices.add(device);
 			}
 			catch (Exception ex){
-				mConsole.error("Error, unable to add location manager");
+				mConsole.error("Error, unable to add location manager", ex);
 			}
 		}
 		return true;	

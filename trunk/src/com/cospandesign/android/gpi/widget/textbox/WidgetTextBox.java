@@ -32,7 +32,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.cospandesign.android.gpi.entity.EntityProperty;
 import com.cospandesign.android.gpi.entity.EntityProperty.ENTITY_PROPERTY_TYPE;
 import com.cospandesign.android.gpi.widget.Widget;
 import com.cospandesign.android.gpi.workspace.WorkspaceEntity;

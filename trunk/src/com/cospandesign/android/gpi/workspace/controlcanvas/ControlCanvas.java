@@ -50,7 +50,7 @@ import com.cospandesign.android.gpi.workspace.WorkspaceActivity;
 import com.cospandesign.android.gpi.workspace.WorkspaceEntity;
 import com.cospandesign.android.gpi.workspace.WorkspaceEntity.ConnectionPath;
 import com.cospandesign.android.gpi.workspace.widgetcanvas.WidgetCanvas;
-import com.cospandesign.android.gpi.workspace.widgetcanvas.WidgetView;
+import com.cospandesign.android.gpi.workspace.widgetcanvas.WidgetViewGroup;
 import com.cospandesign.gpi.R;
 
 public class ControlCanvas extends ViewGroup implements DropTarget, DragSource, MessageEndPoint 
@@ -410,12 +410,11 @@ public class ControlCanvas extends ViewGroup implements DropTarget, DragSource, 
 		}
 	}
 	private void drawShadowConnections(View v, Widget widget){
-		WidgetView widgetView = null;
+		WidgetViewGroup widgetView = null;
 		try {
 			widgetView = widget.getWidgetView();
-		} catch (Exception e) {
-			mConsole.error(e.getMessage());
-			e.printStackTrace();
+		} catch (Exception ex) {
+			mConsole.error("Error Drawing shadow connections", ex);
 		}
 		
 		if ((widgetView != null) && (widgetView.getVisibility() == VISIBLE)){
@@ -543,9 +542,9 @@ public class ControlCanvas extends ViewGroup implements DropTarget, DragSource, 
 					mConsole.error("Widget Not using default constructor");
 				}
 				
-			} catch (Exception e) {
-				mConsole.error(e.getMessage());
-				e.printStackTrace();
+			} catch (Exception ex) {
+				mConsole.error("Error during external drop", ex);
+
 			}
 			
 			//Widget widget = new Widget(ref.getName(), ref.getInfo(), ref.getImage(), this.getContext(), true);

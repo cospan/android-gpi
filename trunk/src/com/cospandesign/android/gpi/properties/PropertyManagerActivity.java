@@ -61,17 +61,20 @@ import com.cospandesign.android.gpi.entity.EntityProperty;
 import com.cospandesign.android.gpi.entity.EntityProperty.ENTITY_PROPERTY_TYPE;
 import com.cospandesign.android.gpi.medium.Medium;
 import com.cospandesign.android.gpi.widget.Widget;
+import com.cospandesign.android.gpi.workspace.WorkspaceEntity;
 import com.cospandesign.gpi.R;
 
 public class PropertyManagerActivity extends Activity
 {
 	
+	public ArrayList<WorkspaceEntity> mWses;
 	Controller mSubServ;
 	HashMap<String, Entity> mEntityMap;	
 	ArrayList<Widget> mWidgets;
 	
 	View mPropertyView;
 	LinearLayout mainPropertyViewGroup;
+
 	
 	TextView mNameLabel;
 	TextView mInfoLabel;
@@ -102,6 +105,8 @@ public class PropertyManagerActivity extends Activity
 		mSubServ = (Controller)((GpiApp)getApplication()).getControlTree().getController();
 		mEntityMap = new HashMap<String, Entity>();
 		mWidgets = ((GpiApp)getApplication()).getWidgets();
+		mWses = ((GpiApp)getApplication()).getActiveWses();
+		
 		
 		
 		mainPropertyViewGroup = (LinearLayout) findViewById(R.id.MainPropertyLinearLayout);
@@ -131,11 +136,18 @@ public class PropertyManagerActivity extends Activity
 		Bundle bundle = getIntent().getExtras();
 		
 		//search the incomming bundle for a key
+		//because widget's are cloned at start, we can't use this value
+/*		
 		if (bundle.containsKey("widget")){
 			mEntity = mWidgets.get(bundle.getInt("widget"));
 		}
+
 		else if (bundle.containsKey("entity")){
 			mEntity = mEntityMap.get(bundle.get("entity"));
+		}
+		*/		
+		if (bundle.containsKey("workspace entity")){
+			mEntity = mWses.get(bundle.getInt("workspace entity")).getEntity();
 		}
 		mNameLabel.setText(mEntity.getName());
 		mInfoLabel.setText(mEntity.getInfo());

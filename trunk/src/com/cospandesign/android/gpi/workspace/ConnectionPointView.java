@@ -35,6 +35,7 @@ import android.text.format.Time;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.TextView;
 
+import com.cospandesign.android.gpi.GpiConsole;
 import com.cospandesign.android.gpi.entity.Entity;
 import com.cospandesign.android.gpi.workspace.controlcanvas.ControlCanvas;
 import com.cospandesign.android.gpi.workspace.controlcanvas.ControlCanvas.ConnectLabelLayoutParams.IO;
@@ -42,7 +43,7 @@ import com.cospandesign.android.gpi.workspace.controlcanvas.ControlCanvas.Connec
 public class ConnectionPointView extends TextView
 {
 	WorkspaceEntity mWorkspaceEntity;
-	
+	final GpiConsole mGpiConsole = GpiConsole.getinstance();
 	
 	//Animation Set
 	private static int LTPURPLE = Color.argb(255, 180, 80, 250);
@@ -387,7 +388,12 @@ public class ConnectionPointView extends TextView
 		//mStatusDrawable.invalidateSelf();
 		//invalidateDrawable(getBackground());
 		mStatusDrawable.run();
-		postInvalidate();
+		try {
+			postInvalidate();
+		}
+		catch (Exception ex){
+			mGpiConsole.debug("Post Invalidate failed " + ex.getMessage());
+		}
 	}
 
 	public class StatusDrawable extends Drawable implements Callback, Runnable{

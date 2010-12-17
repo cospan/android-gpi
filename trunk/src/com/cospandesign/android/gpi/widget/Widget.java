@@ -23,17 +23,18 @@ import android.content.Context;
 import android.view.View;
 
 import com.cospandesign.android.gpi.entity.Entity;
+import com.cospandesign.android.gpi.entity.EntityProperty.ENTITY_PROPERTY_TYPE;
 import com.cospandesign.android.gpi.workspace.WorkspaceEntity;
-import com.cospandesign.android.gpi.workspace.widgetcanvas.WidgetView;
+import com.cospandesign.android.gpi.workspace.widgetcanvas.WidgetViewGroup;
 
 public class Widget extends Entity
 {
-	//static final String WIDTH_STRING = "View Width";
-	//static final String HEIGHT_STRING = "View Height";
+	static final String WIDTH_STRING = "View Width";
+	static final String HEIGHT_STRING = "View Height";
 	//public WidgetView mWidgetView;
 	
-	//int DefaultWidth = 50;
-	//int DefaultHeight = 50;
+	int mViewWidth = 50;
+	int mViewHeight = 50;
 	
 	public Widget(String name, String info, Integer image, Context c, boolean enabled)
 	{
@@ -41,8 +42,8 @@ public class Widget extends Entity
 		
 		//mWidgetView = new WidgetView(c, this);
 		
-		//addProperty(WIDTH_STRING, new Integer(mWidgetView.getDefaultWidth()), ENTITY_PROPERTY_TYPE.NUMBER_BOX, "Set the width of the view", false);
-		//addProperty(HEIGHT_STRING, new Integer(mWidgetView.getDefaultHeight()), ENTITY_PROPERTY_TYPE.NUMBER_BOX, "Set the height of the view", false);
+		addProperty(WIDTH_STRING, new Integer(mViewWidth), ENTITY_PROPERTY_TYPE.NUMBER_BOX, "Set the width of the view", false);
+		addProperty(HEIGHT_STRING, new Integer(mViewHeight), ENTITY_PROPERTY_TYPE.NUMBER_BOX, "Set the height of the view", false);
 		
 	}
 
@@ -52,12 +53,19 @@ public class Widget extends Entity
 	//can be set by the extended widgets
 	protected void setDefualtViewDimensions(int width, int height){
 		mWorkspaceEntity.setDefaultWidgetViewDimensions(width, height);
-		
+		setProperty(WIDTH_STRING, new Integer(width));
+		setProperty(HEIGHT_STRING, new Integer(height));
 		//These properties will be overriden
 		//addProperty(WIDTH_STRING, new Integer(mWidgetView.getDefaultWidth()), ENTITY_PROPERTY_TYPE.NUMBER_BOX, "default width of the view", false);
 		//addProperty(HEIGHT_STRING, new Integer(mWidgetView.getDefaultHeight()), ENTITY_PROPERTY_TYPE.NUMBER_BOX, "default height of the view", false);
 	}
-	public WidgetView getWidgetView() throws Exception{
+	protected void setWidgetViewDimensions (int width, int height){
+		setProperty(WIDTH_STRING, new Integer(width));
+		setProperty(HEIGHT_STRING, new Integer(height));
+		propertiesUpdate();
+
+	}
+	public WidgetViewGroup getWidgetView() throws Exception{
 		if (mWorkspaceEntity != null){
 			return mWorkspaceEntity.getWidgetView();
 		}
@@ -80,8 +88,10 @@ public class Widget extends Entity
 	public void propertiesUpdate()
 	{
 		super.propertiesUpdate();
-		//mWidgetView.setDefaultWidth ((Integer) getPropertyData(WIDTH_STRING));
-		//mWidgetView.setDefaultHeight ((Integer) getPropertyData(HEIGHT_STRING));
+		mViewWidth = ((Integer) getPropertyData(WIDTH_STRING));
+		mViewHeight = ((Integer) getPropertyData(HEIGHT_STRING));
+		mWorkspaceEntity.setDefaultWidgetViewDimensions(mViewWidth, mViewHeight);
+		mWorkspaceEntity.postInvalidate();
 	}
 	public void AddView(View view){
 		if (mWorkspaceEntity != null){
@@ -91,7 +101,7 @@ public class Widget extends Entity
 	public void RemoveView(View view){
 		if (mWorkspaceEntity != null){
 			if (mWorkspaceEntity.getWidgetView() != null){
-				mWorkspaceEntity.removeWidgetView();
+				mWorkspaceEntity.removeWidgetViews();
 			}
 		}
 	}
@@ -110,4 +120,9 @@ public class Widget extends Entity
 */		
 	}
 
+	@Override
+	public void notifyRemoval() {
+		super.notifyRemoval();
+		mWorkspaceEntity.removeWidgetViews();
+	}
 }

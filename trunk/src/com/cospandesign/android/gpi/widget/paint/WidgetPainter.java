@@ -34,7 +34,7 @@ import com.cospandesign.gpi.R;
 
 public class WidgetPainter extends Widget {
 	
-	PaintView mPainterView;
+	ManifestViewPaint mPainterView;
 	LinearLayout mPainterLayout;
 	
 	private boolean mSelected = false;
@@ -62,7 +62,7 @@ public class WidgetPainter extends Widget {
 		catch (Exception ex){
 			Log.e("GPI", ex.getMessage());
 		}
-		mPainterView = (PaintView) mPainterLayout.findViewById(R.id.paintviewSurfaceCanvas);
+		mPainterView = (ManifestViewPaint) mPainterLayout.findViewById(R.id.paintviewSurfaceCanvas);
 		this.AddView(mPainterLayout);
 		/*
 		mPainterLayout.setFocusable(true);		

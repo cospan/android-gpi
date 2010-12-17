@@ -33,7 +33,11 @@ import com.cospandesign.android.gpi.medium.android.MediumAndroid;
 import com.cospandesign.android.gpi.medium.lcmtcp.MediumLCMTCP;
 import com.cospandesign.android.gpi.medium.test.MediumTest;
 import com.cospandesign.android.gpi.widget.Widget;
-import com.cospandesign.android.gpi.widget.chart.DoubleViewerWidget;
+import com.cospandesign.android.gpi.widget.button.WidgetButton;
+import com.cospandesign.android.gpi.widget.chart.WidgetDoubleChart;
+import com.cospandesign.android.gpi.widget.hslider.WidgetHSlider;
+import com.cospandesign.android.gpi.widget.led.WidgetLED;
+import com.cospandesign.android.gpi.widget.numberbox.WidgetNumberBox;
 import com.cospandesign.android.gpi.widget.paint.WidgetPainter;
 import com.cospandesign.android.gpi.widget.textbox.WidgetTextBox;
 import com.cospandesign.android.gpi.workspace.WorkspaceEntity;
@@ -117,7 +121,7 @@ public class GpiApp extends Application implements StructureListener{
 		
 	}
 	private void SetupWidgets(){
-		mWidgets.add(new DoubleViewerWidget(
+		mWidgets.add(new WidgetDoubleChart(
 				getString(R.string.test_integer_name),
 				getString(R.string.test_integer_info),
 				R.drawable.charter,
@@ -137,6 +141,34 @@ public class GpiApp extends Application implements StructureListener{
 				R.drawable.painterwidget,
 				this,
 				true));
+		
+		mWidgets.add(new WidgetButton (
+				getString(R.string.widget_button_name),
+				getString(R.string.widget_button_info),
+				R.drawable.buttonw,
+				this,
+				true));
+		
+		mWidgets.add(new WidgetHSlider (
+				getString(R.string.widget_horizonal_slider_name),
+				getString(R.string.widget_horizontal_slider_info),
+				R.drawable.hsliderw,
+				this,
+				true));
+		
+		mWidgets.add(new WidgetNumberBox(
+				getString(R.string.widget_number_box_name),
+				getString(R.string.widget_number_box_info),
+				R.drawable.numberboxw,
+				this,
+				true));
+		mWidgets.add(new WidgetLED(
+				getString(R.string.widget_led_name),
+				getString(R.string.widget_led_info),
+				R.drawable.ledw,
+				this,
+				true));
+		
 		
 	}	
 	public static Integer getBoardId() {
