@@ -190,7 +190,7 @@ public class WorkspaceLayout extends FrameLayout implements MessageEndPoint {
 			try{
 				child.measure(widthMeasureSpec, heightMeasureSpec);
 			}catch (Exception ex){
-				mConsole.error(ex.getMessage());
+				mConsole.error("Error while measuring", ex);
 			}
 		}
 		setMeasuredDimension(widthSpecSize, heightSpecSize);

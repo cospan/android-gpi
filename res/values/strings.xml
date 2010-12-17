@@ -4,8 +4,8 @@
     <string name="app_name">GPI</string>
 	<string name="lcm_serial_name">LCM  Serial</string>
 	<string name="lcm_serial_info">Serial implementation of LCM</string>
-	<string name="android_name">"Android"</string>
-	<string name="android_info">"Local Devices"</string>
+	<string name="android_name">Android</string>
+	<string name="android_info">Local Devices</string>
 	<item format="integer" type="raw" name="lcm_serial_control_port_number">59100</item>
 	<string name="lcm_udp_name">LCM UDP</string>
 	<string name="lcm_udp_info">UDP implementation of LCM</string>
@@ -41,6 +41,15 @@
 <string name="widget_textbox_info">Send and receive strings</string>
 <string name="widget_painter_name">Painter</string>
 <string name="widget_painter_info">Paint pictures, send them to your friends!</string>
-<string name="start_service">&quot;GPI&quot;</string>
-<string name="stop_service">&quot;Stopping GPI service&quot;</string>
+<string name="start_service">GPI</string>
+<string name="stop_service">Stopping GPI service</string>
+<string name="widget_button_name">Button</string>
+<string name="widget_button_info">Sends true for pressed, false for released</string>
+<string name="widget_horizonal_slider_name">Horizontal Slider</string>
+<string name="widget_horizontal_slider_info">Its a horizontal slider</string>
+<string name="widget_number_box_name">Number Box</string>
+<string name="widget_number_box_info">Enter receive numbers</string>
+<string name="widget_led_name">LED</string>
+<string name="widget_led_info">View the status of boolean values</string>
+<string name="file_save_version">1</string>
 </resources>

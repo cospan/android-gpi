@@ -32,7 +32,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -55,7 +54,7 @@ import com.cospandesign.android.gpi.widget.Widget;
 import com.cospandesign.android.gpi.workspace.controlcanvas.ControlCanvas;
 import com.cospandesign.android.gpi.workspace.widgetcanvas.WidgetCanvas;
 import com.cospandesign.android.gpi.workspace.widgetcanvas.WidgetGrid;
-import com.cospandesign.android.gpi.workspace.widgetcanvas.WidgetView;
+import com.cospandesign.android.gpi.workspace.widgetcanvas.WidgetViewGroup;
 import com.cospandesign.gpi.R;
 
 public class WorkspaceActivity extends Activity implements DragController.DragListener, MessageRouter, MessageEndPoint, OnClickListener, OnLongClickListener
@@ -400,6 +399,8 @@ public class WorkspaceActivity extends Activity implements DragController.DragLi
 
 			}
 			mControlCanvas.guiInitialization();
+			
+		
 			for (WorkspaceEntity outWse : mWses){
 				for (ConnectionPointView outCpv : outWse.getOutputConnectionList()){
 					for (WorkspaceEntity inWse : mWses){
@@ -415,7 +416,7 @@ public class WorkspaceActivity extends Activity implements DragController.DragLi
 			}
 			
 		}catch (Exception ex){
-			mGpiConsole.error(ex.getMessage());
+			mGpiConsole.error("Error", ex);
 			//ex.printStackTrace();
 		
 		}
@@ -425,11 +426,14 @@ public class WorkspaceActivity extends Activity implements DragController.DragLi
 	public void optionsClick(){
 
 		Intent intent = new Intent(this, PropertyManagerActivity.class);
-		intent.putExtra("entity", mCurrentWse.getEntity().getName());
+		//intent.putExtra("entity", mCurrentWse.getEntity().getName());
+		//don't need the index to the widget items because each widget that was added is a clone
+		/*
 		if (mCurrentWse.getEntity() instanceof Widget){
 			intent.putExtra("widget", mWidgets.indexOf(mCurrentWse.getEntity()));
 		}
-		
+		*/
+		intent.putExtra("workspace entity", this.mWses.indexOf(mCurrentWse));
 		startActivity(intent);
 	}
 	public void onClick(View v)
@@ -477,8 +481,8 @@ public class WorkspaceActivity extends Activity implements DragController.DragLi
 			}
 			
 		}
-		if (v instanceof WidgetView){
-			WidgetView wv = (WidgetView) v;
+		if (v instanceof WidgetViewGroup){
+			WidgetViewGroup wv = (WidgetViewGroup) v;
 		}
 	}
 	public boolean onLongClick(View v)
@@ -496,8 +500,8 @@ public class WorkspaceActivity extends Activity implements DragController.DragLi
 			MessageToRouter(MessageRouter.MESSAGE_TYPE.SELECTED_CONTROL_CANVAS, null, null, null, null);
 			mDragLayer.startDrag((WorkspaceEntity)v, mControlCanvas, (WorkspaceEntity)v, DragController.DRAG_ACTION_MOVE);
 		}
-		if (v instanceof WidgetView){
-			mDragLayer.startDrag((WidgetView)v, mWidgetCanvas, (WidgetView)v, DragController.DRAG_ACTION_MOVE);
+		if (v instanceof WidgetViewGroup){
+			mDragLayer.startDrag((WidgetViewGroup)v, mWidgetCanvas, (WidgetViewGroup)v, DragController.DRAG_ACTION_MOVE);
 		}
 
 		return false;

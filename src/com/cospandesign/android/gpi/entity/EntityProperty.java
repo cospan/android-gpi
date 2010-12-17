@@ -138,7 +138,7 @@ public class EntityProperty {
 			mEntity.propertiesUpdate();
 		}
 		catch (Exception ex){
-			GpiConsole.getinstance().error(ex.getMessage());
+			GpiConsole.getinstance().error("Unable to update Properties", ex);
 		}
 	}
 	public void findDefaultType(){

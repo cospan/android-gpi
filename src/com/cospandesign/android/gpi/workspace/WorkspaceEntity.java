@@ -44,9 +44,8 @@ import com.cospandesign.android.gpi.router.MessageRouter.DIRECTED;
 import com.cospandesign.android.gpi.router.MessageRouter.MESSAGE_TYPE;
 import com.cospandesign.android.gpi.widget.Widget;
 import com.cospandesign.android.gpi.workspace.controlcanvas.ControlCanvas;
-import com.cospandesign.android.gpi.workspace.controlcanvas.ControlCanvas.ConnectLabelLayoutParams;
 import com.cospandesign.android.gpi.workspace.widgetcanvas.WidgetCanvas;
-import com.cospandesign.android.gpi.workspace.widgetcanvas.WidgetView;
+import com.cospandesign.android.gpi.workspace.widgetcanvas.WidgetViewGroup;
 import com.cospandesign.gpi.R;
 
 public class WorkspaceEntity extends View implements DropTarget, MessageEndPoint
@@ -71,7 +70,7 @@ public class WorkspaceEntity extends View implements DropTarget, MessageEndPoint
 	Rect mIconRect;
 	
 	//Widget View
-	WidgetView mWidgetView;
+	WidgetViewGroup mWidgetView;
 	
 	//Temporary Bitmap Image for dragging
 	Bitmap mDropBitmap;
@@ -144,7 +143,6 @@ public class WorkspaceEntity extends View implements DropTarget, MessageEndPoint
 		guiInitialization(viewPort, workspace);
 		
 	}
-
 	public WorkspaceEntity(Context context, Entity e){
 		super (context);
 		mContext = context;
@@ -530,7 +528,7 @@ public class WorkspaceEntity extends View implements DropTarget, MessageEndPoint
 		}
 		
 		if (mEntity instanceof Widget){
-			mWidgetView = new WidgetView(mContext, this);
+			mWidgetView = new WidgetViewGroup(mContext, this);
 			mWidgetView.setWidgetCanvas(mWidgetCanvas);
 			
 			mWidgetView.setDefaultWidth(100);
@@ -538,28 +536,30 @@ public class WorkspaceEntity extends View implements DropTarget, MessageEndPoint
 		}
 	
 	}
-	public void addWidgetCanvasView(WidgetView view, int x, int y){
-		mWidgetCanvasLayoutParams  = new WidgetCanvas.LayoutParams(x, y, WidgetCanvas.WidgetCanvasViewPort.Zoom, view);
+	public void addWidgetCanvasView(WidgetViewGroup viewGroup, int x, int y){
+		mWidgetCanvasLayoutParams  = new WidgetCanvas.LayoutParams(x, y, WidgetCanvas.WidgetCanvasViewPort.Zoom, viewGroup);
 		mWidgetCanvasLayoutParams.setCanvasLocation(x, y);
-		mWidgetCanvasLayoutParams.setDefaultSize(view);
+		mWidgetCanvasLayoutParams.setDefaultSize(viewGroup);
 		mWidgetCanvasLayoutParams.setZoom(WidgetCanvas.WidgetCanvasViewPort.Zoom);
-		view.setLayoutParams(mWidgetCanvasLayoutParams);
-		mWidgetCanvas.addWidgetView(view);
+		viewGroup.setLayoutParams(mWidgetCanvasLayoutParams);
+		mWidgetCanvas.addWidgetView(viewGroup);
 	}
-	public void addWidgetCanvasView(WidgetView view){
-		view.setLayoutParams(mWidgetCanvasLayoutParams);
-		mWidgetCanvas.addWidgetView(view);
+	public void addWidgetCanvasView(WidgetViewGroup viewGroup){
+		viewGroup.setLayoutParams(mWidgetCanvasLayoutParams);
+		mWidgetCanvas.addWidgetView(viewGroup);
 	}
 	public void addWidgetView(View view){
 		//TODO add widget view from here, not from the widget
 		mWidgetView.addView(view);
 	}
-	public void removeWidgetView(){
+	public void removeWidgetViews(){
 		if (getWidgetView() != null){
+			mWidgetCanvas.removeView(mWidgetView);
 			mWidgetView.removeAllViews();
+			mWidgetCanvas.postInvalidate();
 		}
 	}
-	public WidgetView getWidgetView(){
+	public WidgetViewGroup getWidgetView(){
 		return mWidgetView;
 	}
 	public void setDefaultWidgetViewDimensions(int width, int height){
@@ -756,7 +756,7 @@ public class WorkspaceEntity extends View implements DropTarget, MessageEndPoint
 					mEntity.notifyRemoval();
 				}
 				else{
-					mEntity.removeOutputListener(null, (Entity)Data, null);
+					mEntity.removeOutputListener(null, ((WorkspaceEntity)Data).getEntity(), null);
 				}
 			break;
 		}

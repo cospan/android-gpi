@@ -159,18 +159,18 @@ public class WidgetCanvas extends ViewGroup implements DropTarget, DragSource, M
 		invalidate();
 	}
 */	
-	public void addWidgetView(WidgetView view){
+	public void addWidgetView(WidgetViewGroup view){
 		addView(view, view.getWidgtViewLayoutParams());
 		requestLayout();
 		invalidate();
 	}
-	public void onWidgetClick(WidgetView widgetView, Widget widget)
+	public void onWidgetClick(WidgetViewGroup widgetView, Widget widget)
 	{
 		
 		mWorkspace.onClick(widgetView);
 		
 	}
-	public boolean onWidgetLongClick(WidgetView widgetView, Widget widget)
+	public boolean onWidgetLongClick(WidgetViewGroup widgetView, Widget widget)
 	{
 		mWorkspace.onLongClick(widgetView);
 		return false;
@@ -190,7 +190,7 @@ public class WidgetCanvas extends ViewGroup implements DropTarget, DragSource, M
 	public boolean acceptDrop(DragSource source, int x, int y, int offset,
 			int offset2, Object dragInfo)
 	{
-		if (source instanceof WidgetView){
+		if (source instanceof WidgetViewGroup){
 			return true;
 		}
 		return false;
@@ -216,10 +216,10 @@ public class WidgetCanvas extends ViewGroup implements DropTarget, DragSource, M
 	public void onDrop(DragSource source, int x, int y, int offset,
 			int offset2, Object dragInfo)
 	{
-		if (!(source instanceof WidgetView)){
+		if (!(source instanceof WidgetViewGroup)){
 			return;
 		}
-		WidgetView widgetView = (WidgetView) source;
+		WidgetViewGroup widgetView = (WidgetViewGroup) source;
 		WidgetCanvas.LayoutParams lp = (LayoutParams) widgetView.getLayoutParams();
 		lp.setCanvasLocation(x, y);
 		invalidate();
@@ -279,7 +279,7 @@ public class WidgetCanvas extends ViewGroup implements DropTarget, DragSource, M
 			super(source);
 		}
 		
-		public LayoutParams(int x, int y, float zoom, WidgetView wv){
+		public LayoutParams(int x, int y, float zoom, WidgetViewGroup wv){
 			super(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			
 			setCanvasLocation(x, y);
@@ -287,7 +287,7 @@ public class WidgetCanvas extends ViewGroup implements DropTarget, DragSource, M
 			setZoom (zoom);
 		}
 		
-		public void setDefaultSize(WidgetView wv){
+		public void setDefaultSize(WidgetViewGroup wv){
 			
 			Default_width = wv.getDefaultWidth();
 			Default_height = wv.getDefaultHeight();

@@ -62,7 +62,16 @@ public class GpiConsole {
 		Log.e(GpiConstants.LOG, error);
 		mConsole += error + "\n";
 	}
-	
+	public void error (String error, Exception ex){
+		if (error != null){
+			Log.e(GpiConstants.LOG, error);
+			mConsole += error + "\n";
+		}
+		if (ex != null){
+			Log.e(GpiConstants.LOG, "Method: " + ex.getStackTrace()[0].getMethodName() + " Exception Message: " + ex.getMessage());
+			ex.printStackTrace();
+		}
+	}
 	public String getConsole(){
 		return mConsole;
 	}
